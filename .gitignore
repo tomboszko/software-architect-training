@@ -1,0 +1,42 @@
+# .NET / Visual Studio / Rider
+bin/
+obj/
+.vs/
+.idea/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+TestResults/
+coverage/
+.coverage
+*.coverage
+*.coveragexml
+artifacts/
+
+# Local configuration and secrets
+.env
+.env.*
+!.env.example
+appsettings.Development.json
+appsettings.*.local.json
+secrets.json
+*.pfx
+*.p12
+*.pem
+*.key
+
+# Local databases, logs and temporary files
+*.db
+*.sqlite
+*.sqlite3
+*.log
+*.tmp
+*.bak
+
+# Frontend / editor artifacts if introduced later
+node_modules/
+dist/
+.vscode/.ropeproject
+.DS_Store
+Thumbs.db
