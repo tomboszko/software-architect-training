@@ -17,7 +17,7 @@ J'ai construit le MCD dans Looping, puis revu les entités, les associations, le
 - [Export final Looping](model/export-looping.sql) — export SQL brut de référence.
 - [Script SQL final lisible](sql/01_schema.sql) — même structure et règles, présentées avec une indentation adaptée à la lecture.
 
-La capture authentique du MCD intermédiaire (13 novembre) a été retrouvée. Son intégration binaire au dépôt reste à faire ; elle montre notamment l'ancien nom `REQUERIR_CONDITION`, avant le renommage en `ETRE_POSSIBLE_SI`. La capture finale actualisée et le fichier natif Looping (.loo) restent aussi à déposer lorsqu'ils seront disponibles.
+La [capture du modèle Looping](model/mcd-looping-final.png) est disponible dans le dépôt. Les écarts résiduels entre son dictionnaire, ses cardinalités et le SQL sont signalés dans la [documentation du modèle](model/README.md). Le fichier natif Looping (.loo) reste à déposer.
 
 ## 2. Du modèle au SQL
 
