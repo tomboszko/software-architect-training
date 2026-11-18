@@ -11,7 +11,9 @@
 
 ## Capture du MCD
 
-![Schéma EA pokédex - Looping](model/mcd-looping-final.png)
+![Schéma EA pokédex - Looping](mcd-looping-final.png)
+
+La capture montre le modèle actuel de Looping. Dans le dictionnaire intégré à l'image, `REQUERIR_CONDITION` correspond au nom historique de `ETRE_POSSIBLE_SI`. La cardinalité minimale de `ACCUEILLIR_HABITAT` côté ZONE apparaît à 1 dans la capture, mais n'est pas imposée par le SQL actuel : les données correspondantes restent à documenter. Le fichier natif `.loo` reste à ajouter.
 
 Le diagramme ci-dessous est une **synthèse textuelle des relations finales**, pas une capture de Looping. Les cardinalités reflètent les principaux choix d'après le modèle discuté et le SQL final ; les associations ternaires sont représentées comme une table associative pour la lisibilité.
 
