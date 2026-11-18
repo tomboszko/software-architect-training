@@ -1,0 +1,250 @@
+-- POKEDEX : SCRIPT UNIQUE POUR LOOPING 4.1
+-- Importation : Retroconception > Script SQL de creation des tables.
+-- Ce script contient 12 entites metier et 8 tables d'association.
+-- Les associations plusieurs-a-plusieurs portent un nom explicite.
+-- Les autres associations sont deduites des FOREIGN KEY ; Looping peut les renommer Asso_1, etc.
+-- Les contraintes metier avancees sont listees en fin de fichier.
+
+-- ============================================================
+-- 1. ENTITES DE REFERENCE
+-- ============================================================
+
+CREATE TABLE GENERATION (
+    id_generation INTEGER NOT NULL,
+    numero_generation INTEGER NOT NULL,
+    nom_generation VARCHAR(100) NOT NULL,
+    date_introduction DATE,
+    CONSTRAINT pk_generation PRIMARY KEY (id_generation),
+    CONSTRAINT uq_generation_numero UNIQUE (numero_generation)
+);
+
+CREATE TABLE TYPE (
+    id_type INTEGER NOT NULL,
+    nom_type VARCHAR(50) NOT NULL,
+    description_type VARCHAR(255),
+    CONSTRAINT pk_type PRIMARY KEY (id_type),
+    CONSTRAINT uq_type_nom UNIQUE (nom_type)
+);
+
+CREATE TABLE TALENT (
+    id_talent INTEGER NOT NULL,
+    nom_talent VARCHAR(100) NOT NULL,
+    description_talent VARCHAR(500),
+    CONSTRAINT pk_talent PRIMARY KEY (id_talent)
+);
+
+CREATE TABLE CAPACITE (
+    id_capacite INTEGER NOT NULL,
+    nom_capacite VARCHAR(100) NOT NULL,
+    description_capacite VARCHAR(500),
+    categorie VARCHAR(50),
+    puissance INTEGER,
+    precision_capacite INTEGER,
+    points_pouvoir INTEGER,
+    CONSTRAINT pk_capacite PRIMARY KEY (id_capacite)
+);
+
+CREATE TABLE CONDITION_EVOLUTION (
+    id_condition INTEGER NOT NULL,
+    type_condition VARCHAR(100) NOT NULL,
+    valeur_condition VARCHAR(100),
+    description_condition VARCHAR(500),
+    CONSTRAINT pk_condition_evolution PRIMARY KEY (id_condition)
+);
+
+CREATE TABLE REGION (
+    id_region INTEGER NOT NULL,
+    nom_region VARCHAR(100) NOT NULL,
+    description_region VARCHAR(500),
+    CONSTRAINT pk_region PRIMARY KEY (id_region)
+);
+
+CREATE TABLE HABITAT (
+    id_habitat INTEGER NOT NULL,
+    nom_habitat VARCHAR(100) NOT NULL,
+    description_habitat VARCHAR(500),
+    CONSTRAINT pk_habitat PRIMARY KEY (id_habitat)
+);
+
+CREATE TABLE DRESSEUR (
+    id_dresseur INTEGER NOT NULL,
+    pseudonyme VARCHAR(100) NOT NULL,
+    date_inscription DATE,
+    CONSTRAINT pk_dresseur PRIMARY KEY (id_dresseur)
+);
+
+-- ============================================================
+-- 2. ENTITES PRINCIPALES
+-- ============================================================
+
+-- Association APPARTENIR_GENERATION : GENERATION (0,N) - POKEMON (1,1)
+CREATE TABLE POKEMON (
+    id_pokemon INTEGER NOT NULL,
+    nom_pokemon VARCHAR(100) NOT NULL,
+    nom_categorie VARCHAR(100),
+    description_pokedex VARCHAR(1000),
+    taille_m DECIMAL(6,2),
+    poids_kg DECIMAL(7,2),
+    id_generation INTEGER NOT NULL,
+    CONSTRAINT pk_pokemon PRIMARY KEY (id_pokemon),
+    CONSTRAINT fk_pokemon_generation FOREIGN KEY (id_generation)
+        REFERENCES GENERATION(id_generation)
+);
+
+-- Association APPARTENIR_REGION : REGION (0,N) - ZONE (1,1)
+CREATE TABLE ZONE (
+    id_zone INTEGER NOT NULL,
+    nom_zone VARCHAR(100) NOT NULL,
+    description_zone VARCHAR(500),
+    id_region INTEGER NOT NULL,
+    CONSTRAINT pk_zone PRIMARY KEY (id_zone),
+    CONSTRAINT fk_zone_region FOREIGN KEY (id_region)
+        REFERENCES REGION(id_region)
+);
+
+-- Association POSSEDER_POKEDEX : DRESSEUR (0,N) - POKEDEX (1,1)
+CREATE TABLE POKEDEX (
+    id_pokedex INTEGER NOT NULL,
+    nom_pokedex VARCHAR(100) NOT NULL,
+    date_creation DATE,
+    id_dresseur INTEGER NOT NULL,
+    CONSTRAINT pk_pokedex PRIMARY KEY (id_pokedex),
+    CONSTRAINT fk_pokedex_dresseur FOREIGN KEY (id_dresseur)
+        REFERENCES DRESSEUR(id_dresseur)
+);
+
+-- Associations EVOLUER_DE et EVOLUER_VERS.
+-- Une evolution va d'un POKEMON source a un POKEMON cible.
+CREATE TABLE EVOLUTION (
+    id_evolution INTEGER NOT NULL,
+    id_pokemon_source INTEGER NOT NULL,
+    id_pokemon_cible INTEGER NOT NULL,
+    commentaire_evolution VARCHAR(500),
+    CONSTRAINT pk_evolution PRIMARY KEY (id_evolution),
+    CONSTRAINT fk_evolution_source FOREIGN KEY (id_pokemon_source)
+        REFERENCES POKEMON(id_pokemon),
+    CONSTRAINT fk_evolution_cible FOREIGN KEY (id_pokemon_cible)
+        REFERENCES POKEMON(id_pokemon),
+    CONSTRAINT uq_evolution_paire UNIQUE (id_pokemon_source, id_pokemon_cible)
+);
+
+-- ============================================================
+-- 3. ASSOCIATIONS PLUSIEURS-A-PLUSIEURS
+-- ============================================================
+
+-- POSSEDER_TYPE : POKEMON (1,2) - TYPE (0,N)
+-- position_type vaut 1 (principal) ou 2 (secondaire).
+CREATE TABLE POSSEDER_TYPE (
+    id_pokemon INTEGER NOT NULL,
+    id_type INTEGER NOT NULL,
+    position_type INTEGER NOT NULL,
+    CONSTRAINT pk_posseder_type PRIMARY KEY (id_pokemon, id_type),
+    CONSTRAINT uq_pokemon_position_type UNIQUE (id_pokemon, position_type),
+    CONSTRAINT fk_posseder_type_pokemon FOREIGN KEY (id_pokemon)
+        REFERENCES POKEMON(id_pokemon),
+    CONSTRAINT fk_posseder_type_type FOREIGN KEY (id_type)
+        REFERENCES TYPE(id_type)
+);
+
+-- AVOIR_TALENT : POKEMON (0,N) - TALENT (0,N)
+CREATE TABLE AVOIR_TALENT (
+    id_pokemon INTEGER NOT NULL,
+    id_talent INTEGER NOT NULL,
+    est_cache INTEGER NOT NULL,
+    CONSTRAINT pk_avoir_talent PRIMARY KEY (id_pokemon, id_talent),
+    CONSTRAINT fk_avoir_talent_pokemon FOREIGN KEY (id_pokemon)
+        REFERENCES POKEMON(id_pokemon),
+    CONSTRAINT fk_avoir_talent_talent FOREIGN KEY (id_talent)
+        REFERENCES TALENT(id_talent)
+);
+
+-- APPRENDRE_CAPACITE : POKEMON (0,N) - CAPACITE (0,N)
+CREATE TABLE APPRENDRE_CAPACITE (
+    id_pokemon INTEGER NOT NULL,
+    id_capacite INTEGER NOT NULL,
+    methode_apprentissage VARCHAR(100),
+    niveau_apprentissage INTEGER,
+    CONSTRAINT pk_apprendre_capacite PRIMARY KEY (id_pokemon, id_capacite),
+    CONSTRAINT fk_apprendre_capacite_pokemon FOREIGN KEY (id_pokemon)
+        REFERENCES POKEMON(id_pokemon),
+    CONSTRAINT fk_apprendre_capacite_capacite FOREIGN KEY (id_capacite)
+        REFERENCES CAPACITE(id_capacite)
+);
+
+-- REQUIRIR_CONDITION : EVOLUTION (0,N) - CONDITION_EVOLUTION (0,N)
+CREATE TABLE REQUIRIR_CONDITION (
+    id_evolution INTEGER NOT NULL,
+    id_condition INTEGER NOT NULL,
+    CONSTRAINT pk_requirir_condition PRIMARY KEY (id_evolution, id_condition),
+    CONSTRAINT fk_requirir_condition_evolution FOREIGN KEY (id_evolution)
+        REFERENCES EVOLUTION(id_evolution),
+    CONSTRAINT fk_requirir_condition_condition FOREIGN KEY (id_condition)
+        REFERENCES CONDITION_EVOLUTION(id_condition)
+);
+
+-- APPARAITRE_REGION : POKEMON (0,N) - REGION (0,N)
+CREATE TABLE APPARAITRE_REGION (
+    id_pokemon INTEGER NOT NULL,
+    id_region INTEGER NOT NULL,
+    remarque_presence VARCHAR(255),
+    CONSTRAINT pk_apparaitre_region PRIMARY KEY (id_pokemon, id_region),
+    CONSTRAINT fk_apparaitre_region_pokemon FOREIGN KEY (id_pokemon)
+        REFERENCES POKEMON(id_pokemon),
+    CONSTRAINT fk_apparaitre_region_region FOREIGN KEY (id_region)
+        REFERENCES REGION(id_region)
+);
+
+-- VIVRE_HABITAT : POKEMON (0,N) - HABITAT (0,N)
+CREATE TABLE VIVRE_HABITAT (
+    id_pokemon INTEGER NOT NULL,
+    id_habitat INTEGER NOT NULL,
+    CONSTRAINT pk_vivre_habitat PRIMARY KEY (id_pokemon, id_habitat),
+    CONSTRAINT fk_vivre_habitat_pokemon FOREIGN KEY (id_pokemon)
+        REFERENCES POKEMON(id_pokemon),
+    CONSTRAINT fk_vivre_habitat_habitat FOREIGN KEY (id_habitat)
+        REFERENCES HABITAT(id_habitat)
+);
+
+-- SE_TROUVER : POKEMON (0,N) - ZONE (0,N)
+CREATE TABLE SE_TROUVER (
+    id_pokemon INTEGER NOT NULL,
+    id_zone INTEGER NOT NULL,
+    frequence_rencontre VARCHAR(50),
+    CONSTRAINT pk_se_trouver PRIMARY KEY (id_pokemon, id_zone),
+    CONSTRAINT fk_se_trouver_pokemon FOREIGN KEY (id_pokemon)
+        REFERENCES POKEMON(id_pokemon),
+    CONSTRAINT fk_se_trouver_zone FOREIGN KEY (id_zone)
+        REFERENCES ZONE(id_zone)
+);
+
+-- REFERENCER_POKEMON : POKEDEX (0,N) - POKEMON (0,N)
+-- statut_decouverte : INCONNU, VU ou CAPTURE.
+CREATE TABLE REFERENCER_POKEMON (
+    id_pokedex INTEGER NOT NULL,
+    id_pokemon INTEGER NOT NULL,
+    statut_decouverte VARCHAR(20) NOT NULL,
+    date_premiere_vue DATE,
+    date_premiere_capture DATE,
+    CONSTRAINT pk_referencer_pokemon PRIMARY KEY (id_pokedex, id_pokemon),
+    CONSTRAINT fk_referencer_pokemon_pokedex FOREIGN KEY (id_pokedex)
+        REFERENCES POKEDEX(id_pokedex),
+    CONSTRAINT fk_referencer_pokemon_pokemon FOREIGN KEY (id_pokemon)
+        REFERENCES POKEMON(id_pokemon)
+);
+
+-- ============================================================
+-- 4. REGLES DE GESTION POUR LE MCD / L'APPLICATION
+-- ============================================================
+-- R01 : Chaque POKEMON appartient a exactement une GENERATION d'introduction.
+-- R02 : Chaque POKEMON possede 1 ou 2 TYPE(s), positions 1 et 2 seulement.
+-- R03 : La colonne est_cache de AVOIR_TALENT vaut 0 ou 1.
+-- R04 : Chaque EVOLUTION relie deux POKEMON differents.
+-- R05 : Un POKEMON peut avoir plusieurs evolutions alternatives.
+-- R06 : Une EVOLUTION peut requerir plusieurs conditions combinees.
+-- R07 : Une ZONE appartient a une seule REGION.
+-- R08 : Un POKEDEX appartient a un seul DRESSEUR.
+-- R09 : statut_decouverte appartient a {INCONNU, VU, CAPTURE}.
+-- R10 : La date de premiere capture ne precede pas la premiere vue.
+-- R11 : APPARAITRE_REGION et SE_TROUVER doivent rester coherents.
+-- R12 : Les regles ci-dessus necessitent des verifications en base/application.
+-- Aucun CHECK ou TRIGGER inclus : limitation de retroconception Looping.

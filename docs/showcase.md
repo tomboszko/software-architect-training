@@ -2,7 +2,7 @@
 
 This index will contain a curated selection of exercises, experiments and projects that demonstrate actual skills.
 
-**Current state (2026-11-08):** repository setup in progress. No training exercise, project, grade, certificate or deployment is claimed as completed.
+**Current state (2026-11-18):** the first independent data modeling milestone is documented. Local execution results are reported by the author; they have not been independently reproduced on GitHub. No grade, certificate or deployment is claimed.
 
 ## Evidence index
 
@@ -10,9 +10,9 @@ This index will contain a curated selection of exercises, experiments and projec
 | --- | --- | --- | --- |
 | C# and .NET | To be selected after course onboarding | — | Not published |
 | ASP.NET Core / APIs | To be selected | — | Not published |
-| Data access | To be selected | — | Not published |
-| Architecture and UML | To be selected | — | Not published |
-| Testing and quality | To be selected | — | Not published |
+| Data access | Pokédex — relational model and PostgreSQL | [Schema and importers](../projects/pokedex/) | Local database created and populated |
+| Architecture and UML | Conceptual data model and modeling decisions | [Model](../projects/pokedex/model/) | Database model documented; API/UI planned |
+| Testing and quality | Integrity rules and SQL test scenarios | [Local validation evidence](../projects/pokedex/docs/bilan.md) | 18 + 6 reported passes; concurrency not tested |
 | Containers and cloud | To be selected | — | Not published |
 
 ## Publication criteria

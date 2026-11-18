@@ -4,7 +4,7 @@
 
 Documenting my journey through C#/.NET, ASP.NET Core, software architecture, design patterns, cloud technologies, DevOps, testing and practical projects.
 
-> **Current phase — preparation / onboarding (November 2026).** This repository is being structured before the first course modules. Planned topics are not presented as completed work.
+> **Current phase — training in progress (November 2026).** The Pokédex data modeling learning thread is now documented with a PostgreSQL schema, import scripts and reported local validation. Planned application layers are not presented as completed work.
 
 ## Purpose
 
@@ -29,9 +29,13 @@ This is an **independent learning portfolio**, not an official publication or en
 | --- | --- | --- |
 | [Exercises](exercises/) | Short C#/.NET practice tasks, tests and explanations | Structure ready |
 | [Labs](labs/) | Focused technical experiments | Structure ready |
-| [Projects](projects/) | Selected applications with architectural reasoning | Awaiting project selection |
+| [Projects](projects/) | Selected applications with architectural reasoning | [Pokédex learning thread](projects/pokedex/) in progress |
 | [Technical documentation](docs/) | Diagrams, ADR template and publication guidance | Templates ready |
-| [Public showcase](docs/showcase.md) | Curated links to independently verified results | No results published yet |
+| [Public showcase](docs/showcase.md) | Curated links to documented results and validation evidence | First data modeling milestone documented |
+
+## Ongoing learning thread — Pokédex
+
+[Pokédex — from conceptual modeling to an application](projects/pokedex/): a freely chosen domain for practicing relational data modeling in Looping, PostgreSQL constraints and triggers, SQL validation, and PokéAPI integration. The next steps are SQL query exercises, an API and a user interface. This is an independent learning project, not the official final case study.
 
 ## What I intend to demonstrate
 

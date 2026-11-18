@@ -16,4 +16,6 @@ The training's final case-study brief and publication conditions have not yet be
 
 **ProjectHub is not the selected learning or final project.**
 
-No project has been published yet.
+## Ongoing independent learning project
+
+- [Pokédex — relational data modeling and application architecture](pokedex/): Looping MCD/MLD, PostgreSQL schema, data validation, PokéAPI imports and future API/UI work. The database stage is complete for the selected scope; the application is in progress. This is not a claim that the official final case study has been assigned or completed.
