@@ -11,7 +11,7 @@
 
 ## Capture du MCD
 
-Emplacement prévu : `mcd-looping-intermediaire.png` (capture authentique du 13/11/2026). Cette image doit être ajoutée manuellement au dépôt ; elle n'est pas actuellement versionnée. Elle précède le renommage de REQUERIR_CONDITION et les derniers ajustements de règles. Ajouter ensuite une capture finale et le fichier .loo, sans remplacer l'archive historique.
+![Schéma EA pokédex - Looping](model/mcd-looping-final.png)
 
 Le diagramme ci-dessous est une **synthèse textuelle des relations finales**, pas une capture de Looping. Les cardinalités reflètent les principaux choix d'après le modèle discuté et le SQL final ; les associations ternaires sont représentées comme une table associative pour la lisibilité.
 
