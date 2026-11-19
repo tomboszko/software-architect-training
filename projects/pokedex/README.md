@@ -13,7 +13,6 @@ Le Pokédex doit permettre de consulter les fiches des Pokémon, leurs types, ta
 J'ai construit le MCD dans Looping, puis revu les entités, les associations, leurs cardinalités et le dictionnaire de données. Le passage du MCD au MLD permet de traduire ces choix en tables et clés.
 
 - [Modélisation et décisions](model/README.md)
-- [Script initial pour Looping](model/looping-initial.txt) — archive historique, pas le schéma de référence.
 - [Export final Looping](model/export-looping.sql) — export SQL brut de référence.
 - [Script SQL final lisible](sql/01_schema.sql) — même structure et règles, présentées avec une indentation adaptée à la lecture.
 
